@@ -190,7 +190,6 @@ socket.on("connect", () => {
     scene.add(floor);
     scene.add(grassLeft);
     scene.add(grassRight);
-    scene.add(new THREE.AxesHelper(500));
 
     renderer.setSize(window.innerWidth, window.innerHeight);
 
