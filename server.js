@@ -46,6 +46,12 @@ io.on("connection", (socket) => {
           );
         }
       });
+
+      socket.on("music", (data) => {
+        if (gameSockets[gameSocketId]) {
+          gameSockets[gameSocketId].socket.emit("toggle music", data);
+        }
+      });
     } else {
       console.log(`Controller Connection Failed on ${socket.id}`);
 

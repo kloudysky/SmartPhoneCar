@@ -6,6 +6,7 @@ socket.on("connect", () => {
 
   const game = (url) => {
     let QRCodeElement;
+    const audio = document.querySelector("audio");
 
     const createQR = () => {
       QRCodeElement = document.createElement("div");
@@ -114,6 +115,12 @@ socket.on("connect", () => {
           }
         }
 
+        if (controllerState.music) {
+          audio.play();
+        } else {
+          audio.pause();
+        }
+
         car.translateZ(speed);
 
         if (car.position.x > 18) {
@@ -210,6 +217,7 @@ socket.on("connect", () => {
         alert("Controller Successfully Connected!");
 
         const controllerState = {
+          music: false,
           accelerate: false,
           rotation: {
             gamma: 0,
@@ -249,6 +257,11 @@ socket.on("connect", () => {
           emitUpdates();
         };
 
+        const toggleMusic = (e) => {
+          e.preventDefault();
+          controllerState.music = !controllerState.music;
+        };
+
         const deviceMotion = (e) => {
           controllerState.steer = e.accelerationIncludingGravity.y / 100;
           controllerState.leanForward = e.accelerationIncludingGravity.z / 100;
@@ -268,18 +281,6 @@ socket.on("connect", () => {
           controllerState.orientation.beta = e.beta;
           controllerState.orientation.alpha = e.alpha;
           emitUpdates();
-        };
-
-        let play = false;
-        const audio = document.querySelector("audio");
-        const toggleMusic = () => {
-          if (play) {
-            audio.pause();
-            play = false;
-          } else {
-            audio.play();
-            play = true;
-          }
         };
 
         document
