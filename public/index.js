@@ -23,9 +23,177 @@ socket.on("connect", () => {
       socket.removeListener("game connected", gameConnected);
     };
 
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xffffff);
+    const camera = new THREE.PerspectiveCamera(
+      60,
+      window.innerWidth / window.innerHeight,
+      1,
+      10000
+    );
+
+    const renderer = new THREE.WebGLRenderer({
+      antialias: true,
+    });
+    const gltfLoader = new THREE.GLTFLoader();
+
+    const ambientLight = new THREE.AmbientLight(0x222222);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
+
+    const floor = new THREE.Mesh(
+      new THREE.PlaneBufferGeometry(40, 10000),
+      new THREE.MeshLambertMaterial({ color: 0x343434 })
+    );
+    //grass
+    const grassLeft = new THREE.Mesh(
+      new THREE.PlaneBufferGeometry(30, 10000),
+      new THREE.MeshLambertMaterial({ color: 0x136d15 })
+    );
+    const grassRight = new THREE.Mesh(
+      new THREE.PlaneBufferGeometry(30, 10000),
+      new THREE.MeshLambertMaterial({ color: 0x136d15 })
+    );
+
+    //end grass
+    //Rails
+    const railGeometry = new THREE.PlaneGeometry(10000, 2, 100);
+    const railMaterial = new THREE.MeshBasicMaterial({
+      color: 0x828282,
+      side: THREE.DoubleSide,
+    });
+    const railLeft = new THREE.Mesh(railGeometry, railMaterial);
+    railLeft.rotateY(Math.PI / 2);
+    railLeft.position.x = 20;
+
+    const railRight = new THREE.Mesh(railGeometry, railMaterial);
+    railRight.rotateY(Math.PI / 2);
+    railRight.position.x = -20;
+
+    scene.add(railLeft);
+    scene.add(railRight);
+    //End rails
+    // const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    // controls.update();
+
+    const render = () => {
+      renderer.render(scene, camera);
+
+      if (car) {
+        if (controllerState.steer) {
+          let accel = speed / 2;
+
+          car.rotateY(-controllerState.steer * accel);
+          //camera.rotation.x += controllerState.leanForward / 10;
+          //camera.rotation.y += -controllerState.leanSide / 100;
+
+          // if (controllerState.rotation.beta) {
+          //   camera.rotation.x += -controllerState.rotation.beta / 9000;
+          // }
+          // if (controllerState.rotation.alpha) {
+          //   camera.rotation.y += -controllerState.rotation.alpha / 9000;
+          // }
+        }
+
+        if (controllerState.accelerate) {
+          if (speed < 2) {
+            speed += 0.05;
+          } else {
+            speed = 2;
+          }
+        } else {
+          if (0 < speed) {
+            speed -= 0.05;
+          } else {
+            speed = 0;
+          }
+        }
+
+        car.translateZ(speed);
+
+        if (car.position.x > 18) {
+          car.position.x = 18;
+        }
+        if (car.position.x < -18) {
+          car.position.x = -18;
+        }
+        // if (car.position.z > 150) {
+        //   car.position.z = 150;
+        // }
+        // if (car.position.z < -150) {
+        //   car.position.z = -150;
+        // }
+      }
+
+      requestAnimationFrame(render);
+    };
+
+    let car;
+    let speed = 0;
+    let controllerState = {};
+
+    renderer.shadowMap.enabled = true;
+
+    camera.position.z = -20;
+    camera.position.y = 10;
+
+    directionalLight.position.y = 150;
+    directionalLight.position.x = -100;
+    directionalLight.position.z = -60;
+    directionalLight.castShadow = true;
+
+    floor.rotation.x = -90 * (Math.PI / 180);
+    grassRight.rotation.x = -90 * (Math.PI / 180);
+    grassLeft.rotation.x = -90 * (Math.PI / 180);
+
+    floor.receiveShadow = true;
+    grassRight.receiveShadow = true;
+    grassLeft.receiveShadow = true;
+
+    grassLeft.position.x = 35;
+    grassRight.position.x = -35;
+
+    gltfLoader.load(
+      "assets/toyota_corolla_ae86_trueno_tofu_delivery/scene.gltf",
+      (gltf) => {
+        car = gltf.scene;
+        car.castShadow = true;
+        car.position.y = 1;
+        camera.lookAt(car.position);
+        car.add(camera);
+        scene.add(car);
+      }
+    );
+
+    scene.add(ambientLight);
+    scene.add(directionalLight);
+    scene.add(floor);
+    scene.add(grassLeft);
+    scene.add(grassRight);
+    scene.add(new THREE.AxesHelper(500));
+
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    document.body.appendChild(renderer.domElement);
+
+    render();
+
     socket.emit("game connect");
 
     socket.on("game connected", gameConnected);
+
+    socket.on("controller connected", (connected) => {
+      if (connected) {
+        QRCodeElement.style.display = "none";
+      } else {
+        QR_code_element.style.display = "block";
+
+        controller_state = {};
+      }
+    });
+
+    socket.on("controller state change", (state) => {
+      controllerState = state;
+    });
   };
 
   const controller = (gameId) => {
@@ -54,9 +222,12 @@ socket.on("connect", () => {
             z: 0,
           },
           steer: 0,
+          leadForce: 0,
+          leanSide: 0,
         };
 
         const emitUpdates = () => {
+          console.log(controllerState);
           socket.emit("controller state change", controllerState);
         };
 
@@ -74,13 +245,15 @@ socket.on("connect", () => {
 
         const deviceMotion = (e) => {
           controllerState.steer = e.accelerationIncludingGravity.y / 100;
+          controllerState.leanForward = e.acceleration.z / 100;
+          controllerState.leanSide = e.acceleration.y / 100;
           controllerState.acceleration.x = e.acceleration.x;
           controllerState.acceleration.y = e.acceleration.y;
           controllerState.acceleration.z = e.acceleration.z;
           controllerState.rotation.gamma = e.rotationRate.gamma;
           controllerState.rotation.beta = e.rotationRate.beta;
           controllerState.rotation.alpha = e.rotationRate.alpha;
-          emiteUpdates();
+          emitUpdates();
         };
 
         const deviceOrientation = (e) => {
@@ -88,12 +261,15 @@ socket.on("connect", () => {
           controllerState.orientation.gamma = e.gamma;
           controllerState.orientation.beta = e.beta;
           controllerState.orientation.alpha = e.alpha;
+          emitUpdates();
         };
 
-        document.body.addEventListener("touchstart", touchStart, false); // iOS & Android
-        document.body.addEventListener("MSPointerDown", touchStart, false); // Windows Phone
-        document.body.addEventListener("touchend", touchEnd, false); // iOS & Android
-        document.body.addEventListener("MSPointerUp", touchEnd, false); // Windows Phone
+        document
+          .getElementById("accel")
+          .addEventListener("click", touchStart, false);
+        document
+          .getElementById("brake")
+          .addEventListener("click", touchEnd, false);
         window.addEventListener("devicemotion", deviceMotion, false);
         window.addEventListener("deviceorientation", deviceOrientation, false);
       } else {

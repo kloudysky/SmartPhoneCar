@@ -38,6 +38,7 @@ io.on("connection", (socket) => {
       gameSockets[gameSocketId].socket.emit("controller connected", true);
 
       socket.on("controller state change", (data) => {
+        console.log(data);
         if (gameSockets[gameSocketId]) {
           gameSockets[gameSocketId].socket.emit(
             "controller state change",
