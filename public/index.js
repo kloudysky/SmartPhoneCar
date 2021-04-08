@@ -236,7 +236,7 @@ socket.on("connect", () => {
             z: 0,
           },
           steer: 0,
-          leadForce: 0,
+          leanForward: 0,
           leanSide: 0,
         };
 
