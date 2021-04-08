@@ -87,6 +87,7 @@ socket.on("connect", () => {
           let accel = speed / 2;
 
           car.rotateY(-controllerState.steer * accel);
+          camera.position.y = car.position.y - 6;
           console.log(camera.position.x);
           console.log(car.position.x);
           // if (camera.rotation.x < -2.7 && camera.rotation.x > -3.3) {
@@ -174,11 +175,12 @@ socket.on("connect", () => {
         car.castShadow = true;
         car.position.y = 1;
         camera.lookAt(car.position);
-        car.add(camera);
+        //car.add(camera);
         scene.add(car);
       }
     );
 
+    scene.add(camera);
     scene.add(ambientLight);
     scene.add(directionalLight);
     scene.add(floor);
