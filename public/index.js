@@ -24,7 +24,7 @@ socket.on("connect", () => {
     };
 
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xffffff);
+    scene.background = new THREE.Color("skyblue");
     const camera = new THREE.PerspectiveCamera(
       60,
       window.innerWidth / window.innerHeight,
@@ -35,6 +35,9 @@ socket.on("connect", () => {
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
     });
+    renderer.autoClear = false;
+    renderer.setClearColor(0x000000, 0.0);
+    renderer.setClearAlpha(1.0);
     const gltfLoader = new THREE.GLTFLoader();
 
     const ambientLight = new THREE.AmbientLight(0x222222);
@@ -83,7 +86,7 @@ socket.on("connect", () => {
           let accel = speed / 2;
 
           car.rotateY(-controllerState.steer * accel);
-          //camera.rotation.x += controllerState.leanForward / 10;
+          camera.rotation.x += controllerState.leanForward / 10;
           //camera.rotation.y += -controllerState.leanSide / 100;
 
           // if (controllerState.rotation.beta) {
@@ -133,8 +136,8 @@ socket.on("connect", () => {
 
     renderer.shadowMap.enabled = true;
 
-    camera.position.z = -20;
-    camera.position.y = 10;
+    camera.position.z = -10;
+    camera.position.y = 6;
 
     directionalLight.position.y = 150;
     directionalLight.position.x = -100;
@@ -245,8 +248,8 @@ socket.on("connect", () => {
 
         const deviceMotion = (e) => {
           controllerState.steer = e.accelerationIncludingGravity.y / 100;
-          controllerState.leanForward = e.acceleration.z / 100;
-          controllerState.leanSide = e.acceleration.y / 100;
+          controllerState.leanForward = e.accelerationIncludingGravity.z / 100;
+          controllerState.leanSide = e.accelerationIncludingGravity.y / 100;
           controllerState.acceleration.x = e.acceleration.x;
           controllerState.acceleration.y = e.acceleration.y;
           controllerState.acceleration.z = e.acceleration.z;
