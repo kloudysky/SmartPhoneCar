@@ -86,7 +86,10 @@ socket.on("connect", () => {
           let accel = speed / 2;
 
           car.rotateY(-controllerState.steer * accel);
-          camera.rotation.x += controllerState.leanForward / 10;
+          // if (camera.rotation.x < -2.7 && camera.rotation.x > -3.3) {
+          // camera.rotation.x += controllerState.leanForward;
+          // console.log(camera.rotation.x);
+          // }
           //camera.rotation.y += -controllerState.leanSide / 100;
 
           // if (controllerState.rotation.beta) {
@@ -267,12 +270,27 @@ socket.on("connect", () => {
           emitUpdates();
         };
 
+        let play = false;
+        const audio = document.querySelector("audio");
+        const toggleMusic = () => {
+          if (play) {
+            audio.pause();
+            play = false;
+          } else {
+            audio.play();
+            play = true;
+          }
+        };
+
         document
           .getElementById("accel")
           .addEventListener("click", touchStart, false);
         document
           .getElementById("brake")
           .addEventListener("click", touchEnd, false);
+        document
+          .getElementById("radio")
+          .addEventListener("click", toggleMusic, false);
         window.addEventListener("devicemotion", deviceMotion, false);
         window.addEventListener("deviceorientation", deviceOrientation, false);
       } else {
