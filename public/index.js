@@ -6,7 +6,10 @@ socket.on("connect", () => {
 
   const game = (url) => {
     let QRCodeElement;
-    const audio = document.querySelector("audio");
+    const sound = new Howl({
+      src: ["assets/music/Nutty - Secret Love.mp3"],
+      loop: true,
+    });
 
     const createQR = () => {
       QRCodeElement = document.createElement("div");
@@ -89,8 +92,6 @@ socket.on("connect", () => {
           car.rotateY(-controllerState.steer * accel);
           camera.position.z = car.position.z - 10;
           camera.position.x = car.position.x;
-          console.log(camera.position.z);
-          console.log(car.position.z);
           // if (camera.rotation.x < -2.7 && camera.rotation.x > -3.3) {
           // camera.rotation.x += controllerState.leanForward;
           // console.log(camera.rotation.x);
@@ -121,8 +122,10 @@ socket.on("connect", () => {
 
         if (controllerState.music) {
           audio.play();
+          sound.play();
         } else {
           audio.pause();
+          sound.pause();
         }
 
         car.translateZ(speed);
