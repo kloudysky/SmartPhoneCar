@@ -121,10 +121,8 @@ socket.on("connect", () => {
         }
 
         if (controllerState.music) {
-          audio.play();
           sound.play();
         } else {
-          audio.pause();
           sound.pause();
         }
 
