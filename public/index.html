@@ -10,17 +10,24 @@
     <script src="js/OrbitControls.js"></script>
     <script src="./../socket.io/socket.io.js"></script>
     <script src="js/qrcode.min.js"></script>
+    <script src="js/modal.js"></script>
     <link rel="stylesheet" href="style.css" />
     <title>Phone. Controller.</title>
   </head>
   <body>
-    <audio src="assets/music/Symbol - Forever Young.mp3" muted></audio>
+    <div class="popup-modal shadow" data-popup-modal="one">
+      <i
+        class="fas fa-2x fa-times text-white bg-primary p-3 popup-modal__close"
+      ></i>
+      <h1 class="font-weight-bold">Connect Phone</h1>
+    </div>
     <h1>Phone Controller</h1>
     <div class="car-buttons show-mobile">
       <button id="accel">ACCEL</button>
       <button id="brake">BRAKE</button>
       <button id="radio">PLAY/PAUSE</button>
     </div>
+    <audio src="assets/music/Symbol - Forever Young.mp3" muted></audio>
     <script src="./index.js"></script>
   </body>
 </html>

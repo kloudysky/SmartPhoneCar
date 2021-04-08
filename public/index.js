@@ -6,15 +6,20 @@ socket.on("connect", () => {
 
   const game = (url) => {
     let QRCodeElement;
-    const sound = new Howl({
-      src: ["assets/music/Nutty - Secret Love.mp3"],
-      loop: true,
-    });
+    let modal;
+    // const sound = new Howl({
+    //   src: ["assets/music/Nutty - Secret Love.mp3"],
+    //   loop: true,
+    // });
 
     const createQR = () => {
+      modal = document.createElement("div");
+      QRCodeElement = document.createElement("div");
+      modal.className = "body-blackout";
       QRCodeElement = document.createElement("div");
       QRCodeElement.id = "qr-code";
-      document.body.appendChild(QRCodeElement);
+      modal.appendChild(QRCodeElement);
+      document.body.appendChild(modal);
       QRCodeElement = document.getElementById("qr-code");
 
       const QRcode = new QRCode("qr-code");
@@ -121,9 +126,9 @@ socket.on("connect", () => {
         }
 
         if (controllerState.music) {
-          sound.play();
+          // sound.play();
         } else {
-          sound.pause();
+          // sound.pause();
         }
 
         car.translateZ(speed);
@@ -201,9 +206,9 @@ socket.on("connect", () => {
 
     socket.on("controller connected", (connected) => {
       if (connected) {
-        QRCodeElement.style.display = "none";
+        modal.style.display = "none";
       } else {
-        QR_code_element.style.display = "block";
+        modal.style.display = "flex";
 
         controller_state = {};
       }
