@@ -158,12 +158,6 @@ socket.on("connect", () => {
         if (car.position.x < -18) {
           car.position.x = -18;
         }
-        // if (car.position.z > 150) {
-        //   car.position.z = 150;
-        // }
-        // if (car.position.z < -150) {
-        //   car.position.z = -150;
-        // }
       }
 
       requestAnimationFrame(render);
@@ -202,44 +196,9 @@ socket.on("connect", () => {
         car.castShadow = true;
         car.position.y = 1;
         camera.lookAt(car.position);
-        //car.add(camera);
         scene.add(car);
       }
     );
-
-    gltfLoader.load("assets/super_mario_coin/scene.gltf", (gltf) => {
-      coin = gltf.scene;
-      coin.castShadow = true;
-    });
-
-    const getRandomArbitrary = (min, max) => {
-      return Math.random() * (max - min) + min;
-    };
-
-    const makeRandomCoin = () => {
-      if (coin) {
-        coin.position.x = getRandomArbitrary(-19, 19);
-        coin.position.y = getRandomArbitrary(10000, 0);
-        coin.position.z = 0;
-
-        //coin.scale.set(0.4, 0.4, 0.4);
-        //coin.rotation.set(2, 1.58, -0.5);
-
-        coins.push(coin);
-        coin.name = "box_" + id;
-        id++;
-        collideMeshList.push(coin);
-
-        scene.add(coin);
-      }
-    };
-
-    const renderCoins = () => {
-      for (let i = 0; i < 50; i++) {
-        makeRandomCoin();
-      }
-    };
-    //renderCoins();
 
     scene.add(camera);
     scene.add(ambientLight);
