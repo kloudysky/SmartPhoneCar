@@ -17,13 +17,20 @@ socket.on("connect", () => {
       let modalHeader = document.createElement("div");
       let modalTitle = document.createElement("h2");
       let modalText = document.createElement("p");
+      let modalIcon = document.createElement("i");
+      let modalImg = document.createElement("img");
       QRCodeElement = document.createElement("div");
       modal.className = "body-blackout";
+      modalIcon.className = "far fa-image";
       modalTitle.id = "modal-title";
       modalText.id = "modal-text";
+      modalImg.src = "assets/device-phone-rotate-landscape-512.webp";
+      modalImg.style.width = "100px";
+      modalImg.style.color = "white";
       QRCodeElement = document.createElement("div");
       QRCodeElement.id = "qr-code";
       modalHeader.appendChild(modalTitle);
+      modalHeader.appendChild(modalImg);
       modalHeader.appendChild(modalText);
       modal.appendChild(modalHeader);
       modal.appendChild(QRCodeElement);
@@ -32,7 +39,7 @@ socket.on("connect", () => {
       modalTitle.innerHTML = "Smartphone Controller";
       modalText = document.getElementById("modal-text");
       modalText.innerHTML =
-        "This game uses your phone as a remote control.<br><br>Use the QR Code below to connect your phone and start playing.<br><br>After you connect, hold your phone portrait style and pretend it's a steering wheel.<br><br>Hit accel to accelerate and brake to stop";
+        "This game uses your phone as a remote control.<br><br>Use the QR Code below to connect your phone and start playing.<br><br>After you connect, hold your phone LANDSCAPE style and pretend it's a steering wheel.<br><br>Hit accel to accelerate and brake to stop";
       QRCodeElement = document.getElementById("qr-code");
 
       const QRcode = new QRCode("qr-code");
@@ -305,7 +312,7 @@ socket.on("connect", () => {
           controllerState.orientation.alpha = e.alpha;
           emitUpdates();
         };
-
+        screen.lockOrientation("portrait-primary");
         document
           .getElementById("accel")
           .addEventListener("click", touchStart, false);
