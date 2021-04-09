@@ -185,7 +185,8 @@ socket.on("connect", () => {
     renderer.shadowMap.enabled = true;
 
     camera.position.z = -10;
-    camera.position.y = 6;
+    camera.position.y = 4;
+    camera.rotation.y = -0.01;
 
     directionalLight.position.y = 150;
     directionalLight.position.x = -100;
@@ -255,11 +256,12 @@ socket.on("connect", () => {
     gltfLoader.load("assets/iron_man/scene.gltf", (gltf) => {
       ironman = gltf.scene;
       ironman.castShadow = true;
-      // ironman.position.y = -5;
-      ironman.position.z = 50;
-      // ironman.position.x = -55;
-      // ironman.rotation.y = -Math.PI / 2;
-      // ironman.scale.set(10, 10, 10);
+      // ironman.position.y = 0;
+      ironman.position.z = 100;
+      ironman.position.x = 30;
+      ironman.rotation.y = -Math.PI * 0.8;
+      ironman.scale.set(0.0025, 0.0025, 0.0025);
+      // ironman.lookAt(car);
       scene.add(ironman);
     });
 
