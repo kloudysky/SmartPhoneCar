@@ -312,7 +312,6 @@ socket.on("connect", () => {
           controllerState.orientation.alpha = e.alpha;
           emitUpdates();
         };
-        screen.lockOrientation("portrait-primary");
         document
           .getElementById("accel")
           .addEventListener("click", touchStart, false);
