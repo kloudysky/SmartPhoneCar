@@ -9,14 +9,26 @@
     <script src="js/GLTFLoader.js"></script>
     <script src="./../socket.io/socket.io.js"></script>
     <script src="js/qrcode.min.js"></script>
+    <script src="nosleep.js"></script>
     <link rel="stylesheet" href="style.css" />
     <title>Phone. Controller.</title>
   </head>
   <body>
-    <div class="car-buttons show-mobile">
-      <button id="accel">ACCEL</button>
-      <button id="brake">BRAKE</button>
-      <button id="radio">PLAY/PAUSE</button>
+    <div class="car-btns show-mobile">
+      <button class="car-btn btn-brake" id="brake">
+        <h3 class="btn-text">BRAKE</h3>
+      </button>
+      <button class="car-btn btn-accel" id="accel">
+        <h3 class="btn-text">ACCEL</h3>
+      </button>
+      <!-- <button id="radio">PLAY/PAUSE</button> -->
+    </div>
+    <div id="mobile-msg" class="mobile-message">
+      <p>
+        Uh oh, it looks like you're trying to play this game on your mobile.<br /><br />Visit
+        this page on your desktop or laptop and it will show you how to get
+        started.<br /><br />Hold on to your phone though! You'll need it 😃
+      </p>
     </div>
     <audio src="assets/music/Symbol - Forever Young.mp3" muted></audio>
     <script src="./index.js"></script>
