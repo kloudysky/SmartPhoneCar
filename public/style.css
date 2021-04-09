@@ -66,8 +66,8 @@ body {
 
 @media only screen and (orientation: landscape) {
   .car-btns {
-    height: 100vw;
-    transform: rotate(90deg);
+    width: 100vw;
+    transform: rotate(-90deg);
   }
 }
 
