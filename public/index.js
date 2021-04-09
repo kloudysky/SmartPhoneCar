@@ -167,10 +167,18 @@ socket.on("connect", () => {
         // }
       }
 
+      if (triforce) {
+        triforce.rotation.y += 0.01;
+      }
+
       requestAnimationFrame(render);
     };
 
     let car;
+    let busterSword;
+    let triforce;
+    let goingMerry;
+    let ironman;
     let speed = 0;
     let controllerState = {};
 
@@ -181,7 +189,7 @@ socket.on("connect", () => {
 
     directionalLight.position.y = 150;
     directionalLight.position.x = -100;
-    directionalLight.position.z = -60;
+    directionalLight.position.z = -30;
     directionalLight.castShadow = true;
 
     floor.rotation.x = -90 * (Math.PI / 180);
@@ -206,6 +214,54 @@ socket.on("connect", () => {
         scene.add(car);
       }
     );
+
+    gltfLoader.load(
+      "assets/final_fantasy_7_buster_sword/scene.gltf",
+      (gltf) => {
+        busterSword = gltf.scene;
+        busterSword.castShadow = true;
+        busterSword.position.y = 25;
+        busterSword.position.z = 400;
+        busterSword.position.x = 25;
+        busterSword.rotation.x = 1;
+        busterSword.rotation.z = 1;
+        busterSword.scale.set(0.8, 0.8, 0.8);
+        scene.add(busterSword);
+      }
+    );
+
+    gltfLoader.load("assets/triforce/scene.gltf", (gltf) => {
+      triforce = gltf.scene;
+      triforce.castShadow = true;
+      triforce.position.y = 2;
+      triforce.position.z = 200;
+      triforce.position.x = -35;
+      // triforce.rotation.x = 1;
+      // triforce.rotation.z = 1;
+      triforce.scale.set(0.2, 0.2, 0.2);
+      scene.add(triforce);
+    });
+
+    gltfLoader.load("assets/one_piece_-going_merry/scene.gltf", (gltf) => {
+      goingMerry = gltf.scene;
+      goingMerry.castShadow = true;
+      goingMerry.position.y = -5;
+      goingMerry.position.z = 900;
+      goingMerry.position.x = -55;
+      goingMerry.rotation.y = -Math.PI / 2;
+      goingMerry.scale.set(10, 10, 10);
+      scene.add(goingMerry);
+    });
+    gltfLoader.load("assets/iron_man/scene.gltf", (gltf) => {
+      ironman = gltf.scene;
+      ironman.castShadow = true;
+      // ironman.position.y = -5;
+      ironman.position.z = 50;
+      // ironman.position.x = -55;
+      // ironman.rotation.y = -Math.PI / 2;
+      // ironman.scale.set(10, 10, 10);
+      scene.add(ironman);
+    });
 
     scene.add(camera);
     scene.add(ambientLight);
