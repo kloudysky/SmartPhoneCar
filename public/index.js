@@ -6,6 +6,7 @@ socket.on("connect", () => {
 
   const game = (url) => {
     let QRCodeElement;
+    let collideMeshList = [];
     let modal;
     let coins = [];
     let id = 0;
@@ -221,8 +222,8 @@ socket.on("connect", () => {
         coin.position.y = getRandomArbitrary(10000, 0);
         coin.position.z = 0;
 
-        coin.scale.set(0.4, 0.4, 0.4);
-        coin.rotation.set(2, 1.58, -0.5);
+        //coin.scale.set(0.4, 0.4, 0.4);
+        //coin.rotation.set(2, 1.58, -0.5);
 
         coins.push(coin);
         coin.name = "box_" + id;
