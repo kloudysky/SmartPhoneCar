@@ -14,12 +14,6 @@ body {
   }
 } */
 
-@media only screen and (max-width: 768px) {
-  .show-mobile {
-    display: flex;
-  }
-}
-
 #qr-code {
   padding: 20px;
   background-color: white;
@@ -47,8 +41,16 @@ body {
 
 .car-btns {
   display: none;
+  height: 100vh;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
+}
+
+@media only screen and (max-width: 768px) {
+  .show-mobile {
+    display: flex;
+  }
 }
 
 .car-btn {
