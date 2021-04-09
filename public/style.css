@@ -7,12 +7,12 @@ body {
   background-color: skyblue;
 }
 
-@media only screen and (orientation: portrait) {
+/* @media only screen and (orientation: portrait) {
   .landscape {
     height: 100vw;
     transform: rotate(90deg);
   }
-}
+} */
 
 @media only screen and (min-width: 767px) {
   .show-large {
