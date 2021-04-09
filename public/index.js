@@ -239,7 +239,11 @@ socket.on("connect", () => {
         makeRandomCoin();
       }
     };
+<<<<<<< HEAD
     renderCoins();
+=======
+    //renderCoins();
+>>>>>>> parent of 0c13c0a (:hammer: removed coins)
 
     scene.add(camera);
     scene.add(ambientLight);
