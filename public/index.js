@@ -239,7 +239,7 @@ socket.on("connect", () => {
         makeRandomCoin();
       }
     };
-    renderCoins();
+    //renderCoins();
 
     scene.add(camera);
     scene.add(ambientLight);
