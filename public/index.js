@@ -14,12 +14,25 @@ socket.on("connect", () => {
 
     const createQR = () => {
       modal = document.createElement("div");
+      let modalHeader = document.createElement("div");
+      let modalTitle = document.createElement("h2");
+      let modalText = document.createElement("p");
       QRCodeElement = document.createElement("div");
       modal.className = "body-blackout";
+      modalTitle.id = "modal-title";
+      modalText.id = "modal-text";
       QRCodeElement = document.createElement("div");
       QRCodeElement.id = "qr-code";
+      modalHeader.appendChild(modalTitle);
+      modalHeader.appendChild(modalText);
+      modal.appendChild(modalHeader);
       modal.appendChild(QRCodeElement);
       document.body.appendChild(modal);
+      modalTitle = document.getElementById("modal-title");
+      modalTitle.innerHTML = "Smartphone Controller";
+      modalText = document.getElementById("modal-text");
+      modalText.innerHTML =
+        "This game uses your phone as a remote control.<br><br>Use the QR Code below to connect your phone and start playing.<br><br>After you connect, hold your phone portrait style and pretend it's a steering wheel.<br><br>Hit accel to accelerate and brake to stop";
       QRCodeElement = document.getElementById("qr-code");
 
       const QRcode = new QRCode("qr-code");
