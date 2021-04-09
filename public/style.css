@@ -39,7 +39,7 @@ body {
 
 .car-btns {
   display: none;
-  height: 100%;
+  height: 100vh;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;

@@ -61,6 +61,8 @@ socket.on("connect", () => {
       10000
     );
 
+    const highwayLength = 10000;
+
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
     });
@@ -73,22 +75,22 @@ socket.on("connect", () => {
     const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
 
     const floor = new THREE.Mesh(
-      new THREE.PlaneBufferGeometry(40, 10000),
+      new THREE.PlaneBufferGeometry(40, highwayLength),
       new THREE.MeshLambertMaterial({ color: 0x343434 })
     );
     //grass
     const grassLeft = new THREE.Mesh(
-      new THREE.PlaneBufferGeometry(30, 10000),
-      new THREE.MeshLambertMaterial({ color: 0x136d15 })
+      new THREE.PlaneBufferGeometry(40, highwayLength),
+      new THREE.MeshLambertMaterial({ color: 0x4d602a })
     );
     const grassRight = new THREE.Mesh(
-      new THREE.PlaneBufferGeometry(30, 10000),
-      new THREE.MeshLambertMaterial({ color: 0x136d15 })
+      new THREE.PlaneBufferGeometry(40, highwayLength),
+      new THREE.MeshLambertMaterial({ color: 0x4d602a })
     );
 
     //end grass
     //Rails
-    const railGeometry = new THREE.PlaneGeometry(10000, 2, 100);
+    const railGeometry = new THREE.PlaneGeometry(highwayLength, 2, 100);
     const railMaterial = new THREE.MeshBasicMaterial({
       color: 0x828282,
       side: THREE.DoubleSide,
@@ -170,6 +172,9 @@ socket.on("connect", () => {
       if (triforce) {
         triforce.rotation.y += 0.01;
       }
+      if (dragonballs) {
+        dragonballs.rotateY(0.02);
+      }
 
       requestAnimationFrame(render);
     };
@@ -179,6 +184,9 @@ socket.on("connect", () => {
     let triforce;
     let goingMerry;
     let ironman;
+    let naruto;
+    let pirhana;
+    let dragonballs;
     let speed = 0;
     let controllerState = {};
 
@@ -201,8 +209,8 @@ socket.on("connect", () => {
     grassRight.receiveShadow = true;
     grassLeft.receiveShadow = true;
 
-    grassLeft.position.x = 35;
-    grassRight.position.x = -35;
+    grassLeft.position.x = 45;
+    grassRight.position.x = -45;
 
     gltfLoader.load(
       "assets/toyota_corolla_ae86_trueno_tofu_delivery/scene.gltf",
@@ -213,6 +221,9 @@ socket.on("connect", () => {
         camera.lookAt(car.position);
         //car.add(camera);
         scene.add(car);
+      },
+      function (xhr) {
+        console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
       }
     );
 
@@ -222,26 +233,33 @@ socket.on("connect", () => {
         busterSword = gltf.scene;
         busterSword.castShadow = true;
         busterSword.position.y = 25;
-        busterSword.position.z = 400;
+        busterSword.position.z = 1000;
         busterSword.position.x = 25;
         busterSword.rotation.x = 1;
         busterSword.rotation.z = 1;
         busterSword.scale.set(0.8, 0.8, 0.8);
         scene.add(busterSword);
+      },
+      (xhr) => {
+        console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
       }
     );
 
-    gltfLoader.load("assets/triforce/scene.gltf", (gltf) => {
-      triforce = gltf.scene;
-      triforce.castShadow = true;
-      triforce.position.y = 2;
-      triforce.position.z = 200;
-      triforce.position.x = -35;
-      // triforce.rotation.x = 1;
-      // triforce.rotation.z = 1;
-      triforce.scale.set(0.2, 0.2, 0.2);
-      scene.add(triforce);
-    });
+    gltfLoader.load(
+      "assets/triforce/scene.gltf",
+      (gltf) => {
+        triforce = gltf.scene;
+        triforce.castShadow = true;
+        triforce.position.y = 2;
+        triforce.position.z = 500;
+        triforce.position.x = -35;
+        triforce.scale.set(0.2, 0.2, 0.2);
+        scene.add(triforce);
+      },
+      (xhr) => {
+        console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
+      }
+    );
 
     gltfLoader.load("assets/one_piece_-going_merry/scene.gltf", (gltf) => {
       goingMerry = gltf.scene;
@@ -253,17 +271,71 @@ socket.on("connect", () => {
       goingMerry.scale.set(10, 10, 10);
       scene.add(goingMerry);
     });
-    gltfLoader.load("assets/iron_man/scene.gltf", (gltf) => {
-      ironman = gltf.scene;
-      ironman.castShadow = true;
-      // ironman.position.y = 0;
-      ironman.position.z = 100;
-      ironman.position.x = 30;
-      ironman.rotation.y = -Math.PI * 0.8;
-      ironman.scale.set(0.0025, 0.0025, 0.0025);
-      // ironman.lookAt(car);
-      scene.add(ironman);
-    });
+
+    gltfLoader.load(
+      "assets/iron_man/scene.gltf",
+      (gltf) => {
+        ironman = gltf.scene;
+        ironman.castShadow = true;
+        ironman.position.z = 2000;
+        ironman.position.x = 30;
+        ironman.rotation.y = -Math.PI * 0.8;
+        ironman.scale.set(0.0025, 0.0025, 0.0025);
+        scene.add(ironman);
+      },
+      (xhr) => {
+        console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
+      }
+    );
+
+    gltfLoader.load(
+      "assets/naruto_sage_mode/scene.gltf",
+      (gltf) => {
+        naruto = gltf.scene;
+        naruto.castShadow = true;
+        naruto.position.z = 700;
+        naruto.position.x = 35;
+        naruto.rotation.y = -Math.PI;
+        naruto.scale.set(0.0015, 0.0015, 0.0015);
+        scene.add(naruto);
+      },
+      (xhr) => {
+        console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
+      }
+    );
+
+    gltfLoader.load(
+      "assets/piranha_in_pipe_-_mario/scene.gltf",
+      (gltf) => {
+        pirhana = gltf.scene;
+        pirhana.castShadow = true;
+        pirhana.position.z = 1300;
+        pirhana.position.x = -45;
+        pirhana.scale.set(5, 5, 5);
+        scene.add(pirhana);
+      },
+      (xhr) => {
+        console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
+      }
+    );
+
+    gltfLoader.load(
+      "assets/the_dragon_balls/scene.gltf",
+      (gltf) => {
+        dragonballs = gltf.scene;
+        dragonballs.castShadow = true;
+        dragonballs.position.z = 1500;
+        dragonballs.position.y = 20;
+        dragonballs.rotation.z = Math.PI / 2;
+        dragonballs.rotation.y = Math.PI / 2;
+        dragonballs.position.x = 30;
+        dragonballs.scale.set(0.02, 0.02, 0.02);
+        scene.add(dragonballs);
+      },
+      (xhr) => {
+        console.log((xhr.loaded / xhr.total) * 100 + "% loaded capsulecorp");
+      }
+    );
 
     scene.add(camera);
     scene.add(ambientLight);
