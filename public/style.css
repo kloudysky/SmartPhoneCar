@@ -49,11 +49,11 @@ body {
   transform: rotate(90deg);
 }
 
-@media only screen and (max-width: 768px) {
+/* @media only screen and (max-width: 768px) {
   .show-mobile {
     display: flex;
   }
-}
+} */
 
 .car-btn {
   height: 100%;

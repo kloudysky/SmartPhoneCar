@@ -331,6 +331,8 @@ socket.on("connect", () => {
 
   if (current_url.indexOf("?id=") > 0) {
     controller(current_url.split("?id=")[1]);
+    const controls = document.getElementById("car-btns");
+    controls.style.display = "flex";
   } else {
     if (isMobile()) {
       const mobileMsg = document.getElementById("mobile-msg");
