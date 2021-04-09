@@ -6,12 +6,12 @@ socket.on("connect", () => {
 
   const game = (url) => {
     let QRCodeElement;
-    let collideMeshList = [];
+    // let collideMeshList = [];
     let modal;
-    let coins = [];
-    let id = 0;
-    let crashId = " ";
-    let score = 0;
+    // let coins = [];
+    // let id = 0;
+    // let crashId = " ";
+    // let score = 0;
 
     // const sound = new Howl({
     //   src: ["assets/music/Nutty - Secret Love.mp3"],
@@ -207,43 +207,39 @@ socket.on("connect", () => {
       }
     );
 
-    gltfLoader.load("assets/super_mario_coin/scene.gltf", (gltf) => {
-      coin = gltf.scene;
-      coin.castShadow = true;
-    });
+    // gltfLoader.load("assets/super_mario_coin/scene.gltf", (gltf) => {
+    //   coin = gltf.scene;
+    //   coin.castShadow = true;
+    // });
 
-    const getRandomArbitrary = (min, max) => {
-      return Math.random() * (max - min) + min;
-    };
+    // const getRandomArbitrary = (min, max) => {
+    //   return Math.random() * (max - min) + min;
+    // };
 
-    const makeRandomCoin = () => {
-      if (coin) {
-        coin.position.x = getRandomArbitrary(-19, 19);
-        coin.position.y = getRandomArbitrary(10000, 0);
-        coin.position.z = 0;
+    // const makeRandomCoin = () => {
+    //   if (coin) {
+    //     coin.position.x = getRandomArbitrary(-19, 19);
+    //     coin.position.y = getRandomArbitrary(10000, 0);
+    //     coin.position.z = 0;
 
-        //coin.scale.set(0.4, 0.4, 0.4);
-        //coin.rotation.set(2, 1.58, -0.5);
+    //     //coin.scale.set(0.4, 0.4, 0.4);
+    //     //coin.rotation.set(2, 1.58, -0.5);
 
-        coins.push(coin);
-        coin.name = "box_" + id;
-        id++;
-        collideMeshList.push(coin);
+    //     coins.push(coin);
+    //     coin.name = "box_" + id;
+    //     id++;
+    //     collideMeshList.push(coin);
 
-        scene.add(coin);
-      }
-    };
+    //     scene.add(coin);
+    //   }
+    // };
 
-    const renderCoins = () => {
-      for (let i = 0; i < 50; i++) {
-        makeRandomCoin();
-      }
-    };
-<<<<<<< HEAD
-    renderCoins();
-=======
+    // const renderCoins = () => {
+    //   for (let i = 0; i < 50; i++) {
+    //     makeRandomCoin();
+    //   }
+    // };
     //renderCoins();
->>>>>>> parent of 0c13c0a (:hammer: removed coins)
 
     scene.add(camera);
     scene.add(ambientLight);
