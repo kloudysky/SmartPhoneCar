@@ -1,6 +1,6 @@
 const socket = io();
 const current_url = window.location.href;
-let sound;
+let audio;
 
 socket.on("connect", () => {
   console.log("Connected to Server");
@@ -49,6 +49,8 @@ socket.on("connect", () => {
       socket.removeListener("game connected", gameConnected);
     };
 
+    audio = new Audio("assets/music/Symbol - Forever Young.mp3");
+
     const scene = new THREE.Scene();
     scene.background = new THREE.Color("skyblue");
     const camera = new THREE.PerspectiveCamera(
@@ -66,7 +68,9 @@ socket.on("connect", () => {
     renderer.autoClear = false;
     renderer.setClearColor(0x000000, 0.0);
     renderer.setClearAlpha(1.0);
+
     const gltfLoader = new THREE.GLTFLoader();
+    const listener = new THREE.AudioListener();
 
     const ambientLight = new THREE.AmbientLight(0x222222);
     const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
@@ -145,13 +149,16 @@ socket.on("connect", () => {
         }
 
         if (controllerState.music) {
-          if (sound) {
-            sound.play();
+          // if (sound) {
+          //   sound.play();
+          // }
+          if (audio) {
+            audio.play();
           }
         } else {
-          if (sound) {
-            sound.pause();
-          }
+          // if (sound) {
+          //   sound.pause();
+          // }
         }
 
         car.translateZ(speed);
@@ -338,6 +345,18 @@ socket.on("connect", () => {
       }
     );
 
+    camera.add(listener);
+    // const sound = new THREE.Audio(listener);
+
+    // load a sound and set it as the Audio object's buffer
+    // const audioLoader = new THREE.AudioLoader();
+    // audioLoader.load("assets/music/Nutty - Secret Love.mp3", function (buffer) {
+    //   sound.setBuffer(buffer);
+    //   sound.setLoop(true);
+    //   sound.setVolume(0.5);
+    //   sound.play();
+    // });
+
     scene.add(camera);
     scene.add(ambientLight);
     scene.add(directionalLight);
@@ -420,10 +439,10 @@ socket.on("connect", () => {
 
         const toggleMusic = (e) => {
           e.preventDefault();
-          sound = new Howl({
-            src: ["assets/music/Nutty - Secret Love.mp3"],
-            loop: true,
-          });
+          // sound = new Howl({
+          //   src: ["assets/music/Nutty - Secret Love.mp3"],
+          //   loop: true,
+          // });
           controllerState.music = !controllerState.music;
           emitUpdates();
         };
@@ -474,7 +493,6 @@ socket.on("connect", () => {
       const mobileMsg = document.getElementById("mobile-msg");
       mobileMsg.style.display = "flex";
     } else {
-      console.log(isMobile());
       game(current_url);
     }
   }
