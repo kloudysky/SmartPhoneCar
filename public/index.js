@@ -149,16 +149,13 @@ socket.on("connect", () => {
         }
 
         if (controllerState.music) {
-          // if (sound) {
-          //   sound.play();
-          // }
           if (audio) {
             audio.play();
           }
         } else {
-          // if (sound) {
-          //   sound.pause();
-          // }
+          if (audio) {
+            audio.pause();
+          }
         }
 
         car.translateZ(speed);
@@ -196,6 +193,7 @@ socket.on("connect", () => {
     let pirhana;
     let dragonballs;
     let speed = 0;
+    let sound;
     let controllerState = {};
 
     renderer.shadowMap.enabled = true;
@@ -217,8 +215,8 @@ socket.on("connect", () => {
     grassRight.receiveShadow = true;
     grassLeft.receiveShadow = true;
 
-    grassLeft.position.x = 45;
-    grassRight.position.x = -45;
+    grassLeft.position.x = 40;
+    grassRight.position.x = -40;
 
     gltfLoader.load(
       "assets/toyota_corolla_ae86_trueno_tofu_delivery/scene.gltf",
@@ -346,16 +344,15 @@ socket.on("connect", () => {
     );
 
     camera.add(listener);
-    // const sound = new THREE.Audio(listener);
+    const sound = new THREE.Audio(listener);
 
     // load a sound and set it as the Audio object's buffer
-    // const audioLoader = new THREE.AudioLoader();
-    // audioLoader.load("assets/music/Nutty - Secret Love.mp3", function (buffer) {
-    //   sound.setBuffer(buffer);
-    //   sound.setLoop(true);
-    //   sound.setVolume(0.5);
-    //   sound.play();
-    // });
+    const audioLoader = new THREE.AudioLoader();
+    audioLoader.load("assets/sound/Ae86 acceleration.m4a", function (buffer) {
+      sound.setBuffer(buffer);
+      sound.setLoop(true);
+      sound.setVolume(0.5);
+    });
 
     scene.add(camera);
     scene.add(ambientLight);
