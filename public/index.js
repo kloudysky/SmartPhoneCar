@@ -1,5 +1,6 @@
 const socket = io();
 const current_url = window.location.href;
+let sound;
 
 socket.on("connect", () => {
   console.log("Connected to Server");
@@ -7,10 +8,6 @@ socket.on("connect", () => {
   const game = (url) => {
     let QRCodeElement;
     let modal;
-    // const sound = new Howl({
-    //   src: ["assets/music/Nutty - Secret Love.mp3"],
-    //   loop: true,
-    // });
 
     const createQR = () => {
       modal = document.createElement("div");
@@ -114,7 +111,7 @@ socket.on("connect", () => {
 
       if (car) {
         if (controllerState.steer) {
-          let accel = speed / 4;
+          let accel = speed / 5;
 
           car.rotateY(-controllerState.steer * accel);
           camera.position.z = car.position.z - 10;
@@ -148,9 +145,13 @@ socket.on("connect", () => {
         }
 
         if (controllerState.music) {
-          // sound.play();
+          if (sound) {
+            sound.play();
+          }
         } else {
-          // sound.pause();
+          if (sound) {
+            sound.pause();
+          }
         }
 
         car.translateZ(speed);
@@ -333,7 +334,7 @@ socket.on("connect", () => {
         scene.add(dragonballs);
       },
       (xhr) => {
-        console.log((xhr.loaded / xhr.total) * 100 + "% loaded capsulecorp");
+        console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
       }
     );
 
@@ -419,7 +420,12 @@ socket.on("connect", () => {
 
         const toggleMusic = (e) => {
           e.preventDefault();
+          sound = new Howl({
+            src: ["assets/music/Nutty - Secret Love.mp3"],
+            loop: true,
+          });
           controllerState.music = !controllerState.music;
+          emitUpdates();
         };
 
         const deviceMotion = (e) => {
@@ -448,9 +454,9 @@ socket.on("connect", () => {
         document
           .getElementById("brake")
           .addEventListener("click", touchEnd, false);
-        // document
-        //   .getElementById("radio")
-        //   .addEventListener("click", toggleMusic, false);
+        document
+          .getElementById("radio")
+          .addEventListener("click", toggleMusic, false);
         window.addEventListener("devicemotion", deviceMotion, false);
         window.addEventListener("deviceorientation", deviceOrientation, false);
       } else {
