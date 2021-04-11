@@ -114,7 +114,7 @@ socket.on("connect", () => {
 
       if (car) {
         if (controllerState.steer) {
-          let accel = speed / 2;
+          let accel = speed / 4;
 
           car.rotateY(-controllerState.steer * accel);
           camera.position.z = car.position.z - 10;
@@ -135,9 +135,9 @@ socket.on("connect", () => {
 
         if (controllerState.accelerate) {
           if (speed < 2) {
-            speed += 0.05;
+            speed += 0.02;
           } else {
-            speed = 2;
+            speed = 1.5;
           }
         } else {
           if (0 < speed) {
