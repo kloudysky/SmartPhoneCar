@@ -344,7 +344,7 @@ socket.on("connect", () => {
     );
 
     camera.add(listener);
-    const sound = new THREE.Audio(listener);
+    sound = new THREE.Audio(listener);
 
     // load a sound and set it as the Audio object's buffer
     const audioLoader = new THREE.AudioLoader();
