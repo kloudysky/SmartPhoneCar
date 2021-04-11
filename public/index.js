@@ -137,6 +137,7 @@ socket.on("connect", () => {
         if (controllerState.accelerate) {
           if (speed < 2) {
             speed += 0.02;
+            sound.play();
           } else {
             speed = 1.5;
           }
@@ -145,6 +146,7 @@ socket.on("connect", () => {
             speed -= 0.05;
           } else {
             speed = 0;
+            sound.stop();
           }
         }
 
