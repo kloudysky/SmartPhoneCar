@@ -428,7 +428,7 @@ socket.on("connect", () => {
         const touchStart = (e) => {
           e.preventDefault();
           controllerState.accelerate = true;
-          emiteUpdates();
+          emitUpdates();
         };
 
         const touchEnd = (e) => {
