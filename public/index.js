@@ -154,6 +154,7 @@ socket.on("connect", () => {
           // }
           if (audio) {
             audio.play();
+            log(audio);
           }
         } else {
           // if (sound) {
