@@ -137,7 +137,9 @@ socket.on("connect", () => {
         if (controllerState.accelerate) {
           if (speed < 2) {
             speed += 0.02;
-            sound.play();
+            if (sound) {
+              sound.play();
+            }
           } else {
             speed = 1.5;
           }
@@ -146,7 +148,10 @@ socket.on("connect", () => {
             speed -= 0.05;
           } else {
             speed = 0;
-            sound.stop();
+            if (sound != null) {
+              // console.log(sound);
+              //sound.stop();
+            }
           }
         }
 
@@ -433,6 +438,9 @@ socket.on("connect", () => {
         const touchEnd = (e) => {
           e.preventDefault();
           controllerState.accelerate = false;
+          if (sound) {
+            sound.stop();
+          }
           emitUpdates();
         };
 
