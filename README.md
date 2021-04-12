@@ -14,7 +14,7 @@ Smartphone Car is a driving simulator that uses your phone as a gyroscope remote
 - [DeviceMotionEvent Web API](https://developer.mozilla.org/en-US/docs/Web/API/DeviceMotionEvent) - Track phone movement
 - [Three.JS](https://threejs.org/) - Render 3D environment
 
-### MVP 1
+## Functionality
 
 #### Listening to mobile phone orientation
 
@@ -54,8 +54,6 @@ const deviceMotion = (e) => {
 window.addEventListener("devicemotion", deviceMotion, false);
 ```
 
-### MVP 2
-
 #### Render car and scene to the web browser
 
 - Using canvas and Three.JS to render a 3D car and scene to the browser
@@ -80,8 +78,6 @@ gltfLoader.load(
       }
     );
 ```
-
-### MVP 3
 
 #### Object interaction
 
@@ -128,7 +124,3 @@ socket.on("controller state change", (state) => {
     };
 });
 ```
-
-### MVP 4
-
-#### Add scoring and background music
