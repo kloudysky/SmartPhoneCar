@@ -1,5 +1,6 @@
 const socket = io();
 const current_url = window.location.href;
+const noSleep = new NoSleep();
 let audio;
 
 socket.on("connect", () => {
@@ -69,7 +70,24 @@ socket.on("connect", () => {
     renderer.setClearColor(0x000000, 0.0);
     renderer.setClearAlpha(1.0);
 
-    const gltfLoader = new THREE.GLTFLoader();
+    const manager = new THREE.LoadingManager();
+
+    manager.onLoad = function () {
+      TweenMax.set("svg", {
+        visibility: "hidden",
+      });
+    };
+
+    manager.onProgress = function (url, itemsLoaded, itemsTotal) {
+      removeText();
+      createText(`Loaded ${itemsLoaded} of ${itemsTotal} files`);
+    };
+
+    manager.onError = function (url) {
+      console.log("There was an error loading " + url);
+    };
+
+    const gltfLoader = new THREE.GLTFLoader(manager);
     const listener = new THREE.AudioListener();
 
     const ambientLight = new THREE.AmbientLight(0x222222);
@@ -137,7 +155,7 @@ socket.on("connect", () => {
         if (controllerState.accelerate) {
           if (speed < 2) {
             speed += 0.02;
-            if (sound) {
+            if (sound && !sound.isPlaying()) {
               sound.play();
             }
           } else {
@@ -252,27 +270,18 @@ socket.on("connect", () => {
         busterSword.rotation.z = 1;
         busterSword.scale.set(0.8, 0.8, 0.8);
         scene.add(busterSword);
-      },
-      (xhr) => {
-        console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
       }
     );
 
-    gltfLoader.load(
-      "assets/triforce/scene.gltf",
-      (gltf) => {
-        triforce = gltf.scene;
-        triforce.castShadow = true;
-        triforce.position.y = 2;
-        triforce.position.z = 500;
-        triforce.position.x = -35;
-        triforce.scale.set(0.2, 0.2, 0.2);
-        scene.add(triforce);
-      },
-      (xhr) => {
-        console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
-      }
-    );
+    gltfLoader.load("assets/triforce/scene.gltf", (gltf) => {
+      triforce = gltf.scene;
+      triforce.castShadow = true;
+      triforce.position.y = 2;
+      triforce.position.z = 500;
+      triforce.position.x = -35;
+      triforce.scale.set(0.2, 0.2, 0.2);
+      scene.add(triforce);
+    });
 
     gltfLoader.load("assets/one_piece_-going_merry/scene.gltf", (gltf) => {
       goingMerry = gltf.scene;
@@ -285,70 +294,46 @@ socket.on("connect", () => {
       scene.add(goingMerry);
     });
 
-    gltfLoader.load(
-      "assets/iron_man/scene.gltf",
-      (gltf) => {
-        ironman = gltf.scene;
-        ironman.castShadow = true;
-        ironman.position.z = 2000;
-        ironman.position.x = 30;
-        ironman.rotation.y = -Math.PI * 0.8;
-        ironman.scale.set(0.0025, 0.0025, 0.0025);
-        scene.add(ironman);
-      },
-      (xhr) => {
-        console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
-      }
-    );
+    gltfLoader.load("assets/iron_man/scene.gltf", (gltf) => {
+      ironman = gltf.scene;
+      ironman.castShadow = true;
+      ironman.position.z = 2000;
+      ironman.position.x = 30;
+      ironman.rotation.y = -Math.PI * 0.8;
+      ironman.scale.set(0.0025, 0.0025, 0.0025);
+      scene.add(ironman);
+    });
 
-    gltfLoader.load(
-      "assets/naruto_sage_mode/scene.gltf",
-      (gltf) => {
-        naruto = gltf.scene;
-        naruto.castShadow = true;
-        naruto.position.z = 700;
-        naruto.position.x = 35;
-        naruto.rotation.y = -Math.PI;
-        naruto.scale.set(0.0015, 0.0015, 0.0015);
-        scene.add(naruto);
-      },
-      (xhr) => {
-        console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
-      }
-    );
+    gltfLoader.load("assets/naruto_sage_mode/scene.gltf", (gltf) => {
+      naruto = gltf.scene;
+      naruto.castShadow = true;
+      naruto.position.z = 700;
+      naruto.position.x = 35;
+      naruto.rotation.y = -Math.PI;
+      naruto.scale.set(0.0015, 0.0015, 0.0015);
+      scene.add(naruto);
+    });
 
-    gltfLoader.load(
-      "assets/piranha_in_pipe_-_mario/scene.gltf",
-      (gltf) => {
-        pirhana = gltf.scene;
-        pirhana.castShadow = true;
-        pirhana.position.z = 1300;
-        pirhana.position.x = -45;
-        pirhana.scale.set(5, 5, 5);
-        scene.add(pirhana);
-      },
-      (xhr) => {
-        console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
-      }
-    );
+    gltfLoader.load("assets/piranha_in_pipe_-_mario/scene.gltf", (gltf) => {
+      pirhana = gltf.scene;
+      pirhana.castShadow = true;
+      pirhana.position.z = 1300;
+      pirhana.position.x = -45;
+      pirhana.scale.set(5, 5, 5);
+      scene.add(pirhana);
+    });
 
-    gltfLoader.load(
-      "assets/the_dragon_balls/scene.gltf",
-      (gltf) => {
-        dragonballs = gltf.scene;
-        dragonballs.castShadow = true;
-        dragonballs.position.z = 1500;
-        dragonballs.position.y = 20;
-        dragonballs.rotation.z = Math.PI / 2;
-        dragonballs.rotation.y = Math.PI / 2;
-        dragonballs.position.x = 30;
-        dragonballs.scale.set(0.02, 0.02, 0.02);
-        scene.add(dragonballs);
-      },
-      (xhr) => {
-        console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
-      }
-    );
+    gltfLoader.load("assets/the_dragon_balls/scene.gltf", (gltf) => {
+      dragonballs = gltf.scene;
+      dragonballs.castShadow = true;
+      dragonballs.position.z = 1500;
+      dragonballs.position.y = 20;
+      dragonballs.rotation.z = Math.PI / 2;
+      dragonballs.rotation.y = Math.PI / 2;
+      dragonballs.position.x = 30;
+      dragonballs.scale.set(0.02, 0.02, 0.02);
+      scene.add(dragonballs);
+    });
 
     camera.add(listener);
     sound = new THREE.Audio(listener);
@@ -399,6 +384,7 @@ socket.on("connect", () => {
     socket.on("controller connected", (connected) => {
       if (connected) {
         alert("Controller Successfully Connected!");
+        noSleep.enable();
 
         const controllerState = {
           music: false,
@@ -446,10 +432,6 @@ socket.on("connect", () => {
 
         const toggleMusic = (e) => {
           e.preventDefault();
-          // sound = new Howl({
-          //   src: ["assets/music/Nutty - Secret Love.mp3"],
-          //   loop: true,
-          // });
           controllerState.music = !controllerState.music;
           emitUpdates();
         };
@@ -474,6 +456,7 @@ socket.on("connect", () => {
           controllerState.orientation.alpha = e.alpha;
           emitUpdates();
         };
+
         document
           .getElementById("accel")
           .addEventListener("click", touchStart, false);
