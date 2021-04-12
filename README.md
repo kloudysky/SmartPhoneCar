@@ -2,6 +2,8 @@
 
 Smartphone Car is a driving simulator that uses your phone as a gyroscope remote control to steer a car from your browser
 
+![Alt text](https://media3.giphy.com/media/N8HhQ0F0JLwGrSA0g9/giphy.gif)
+
 [Give it a try!](https://smartphonecar.herokuapp.com/)
 
 ### Architecture & Technology

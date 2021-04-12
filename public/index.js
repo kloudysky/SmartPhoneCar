@@ -4,8 +4,6 @@ const noSleep = new NoSleep();
 let audio;
 
 socket.on("connect", () => {
-  console.log("Connected to Server");
-
   const game = (url) => {
     let QRCodeElement;
     let modal;
@@ -166,9 +164,8 @@ socket.on("connect", () => {
             speed -= 0.05;
           } else {
             speed = 0;
-            if (sound != null) {
-              // console.log(sound);
-              //sound.stop();
+            if (sound && sound.isPlaying) {
+              sound.stop();
             }
           }
         }
@@ -217,6 +214,7 @@ socket.on("connect", () => {
     let naruto;
     let pirhana;
     let dragonballs;
+    let supermariobox;
     let speed = 0;
     let sound;
     let controllerState = {};
@@ -335,6 +333,18 @@ socket.on("connect", () => {
       scene.add(dragonballs);
     });
 
+    gltfLoader.load("assets/super_mario_box/scene.gltf", (gltf) => {
+      supermariobox = gltf.scene;
+      supermariobox.castShadow = true;
+      supermariobox.position.z = 100;
+      supermariobox.position.y = 10;
+      // supermariobox.rotation.z = Math.PI / 2;
+      // supermariobox.rotation.y = Math.PI / 2;
+      supermariobox.position.x = 30;
+      supermariobox.scale.set(3, 3, 3);
+      scene.add(supermariobox);
+    });
+
     camera.add(listener);
     sound = new THREE.Audio(listener);
 
@@ -411,7 +421,6 @@ socket.on("connect", () => {
         };
 
         const emitUpdates = () => {
-          console.log(controllerState);
           socket.emit("controller state change", controllerState);
         };
 
